@@ -6,18 +6,21 @@ public enum PickupState
 {
     floatingFree,
     snappedToPlayer
-
 }
-public class Pickp : MonoBehaviour
+
+public abstract class Pickup : MonoBehaviour
 {
     public PickupState state;
     private Rigidbody2D rb2d;
-    void Start()
+
+    public virtual int maxStackable { get { return 1; } }
+
+    public virtual void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    public virtual void Update()
     {
 
     }
@@ -25,6 +28,7 @@ public class Pickp : MonoBehaviour
     public void SetState(PickupState s)
     {
         if (s == state) return;
+        //Debug.Log("SetState");
         switch (s)
         {
             case PickupState.floatingFree:

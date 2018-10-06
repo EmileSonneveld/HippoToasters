@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
 {
-    public static PlayerSpawner singleton; // { private set; public get; }
+    public static PlayerSpawner singleton;
+    public PlayerScript lastSpawnedPlayer;
     public GameObject playerPrefab;
 
     void Awake()
@@ -12,6 +13,8 @@ public class PlayerSpawner : MonoBehaviour
         if (singleton)
             Debug.LogWarning("Singleton already assigned!");
         singleton = this;
+
+        lastSpawnedPlayer = Object.FindObjectOfType<PlayerScript>();
     }
 
     void Update()
@@ -24,6 +27,6 @@ public class PlayerSpawner : MonoBehaviour
 
         var obj = Instantiate(playerPrefab);
         obj.transform.position = transform.position;
-
+        lastSpawnedPlayer = obj.GetComponent<PlayerScript>();
     }
 }

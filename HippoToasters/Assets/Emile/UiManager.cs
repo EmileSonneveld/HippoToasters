@@ -5,8 +5,6 @@ using UnityEngine;
 public class UiManager : MonoBehaviour
 {
 
-    public PlayerScript playerScript;
-
     public RectTransform livesTrans;
     //private float origLivesSize;
 
@@ -14,17 +12,17 @@ public class UiManager : MonoBehaviour
     {
 
     }
-    // Use this for initialization
     void Start()
     {
         //origLivesSize = livesTrans.right.x;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        var playerScript = PlayerSpawner.singleton.lastSpawnedPlayer;
+
         var tmp = livesTrans.localScale;
-        tmp.x = (this.playerScript.lives / 100);
+        tmp.x = (playerScript.lives / 100);
         livesTrans.localScale = tmp;
     }
 }
