@@ -6,12 +6,18 @@ public class PlayerScript : MonoBehaviour
 {
     public float lives = 100;
 
+    public Transform[] pickupSlots;
+    /// <summary>
+    /// Pickups that the player has in his back
+    /// </summary>
+    public Pickp[] snappedPickups;
 
     private Transform mainCamera;
 
     void Awake()
     {
         this.mainCamera = Camera.main.transform;
+        snappedPickups = new Pickp[pickupSlots.Length];
     }
 
     // Use this for initialization
@@ -37,10 +43,20 @@ public class PlayerScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.relativeVelocity.sqrMagnitude > 5)
+        Debug.Log(col.collider.name);
+
+        if (col.collider.tag == "Pickup")
         {
-            Debug.Log("OnCollisionEnter2D" + col.relativeVelocity.magnitude);
-            this.lives -= col.relativeVelocity.magnitude * 10; // random multiplier
+            var p = col.collider.GetComponent<Pickp>();
+            this.PickItUp(p);
+        }
+        else if (col.collider.tag == "DangerousCollider")
+        {
+            if (col.relativeVelocity.sqrMagnitude > 5)
+            {
+                Debug.Log("OnCollisionEnter2D" + col.relativeVelocity.magnitude);
+                this.lives -= col.relativeVelocity.magnitude * 10; // random multiplier
+            }
         }
     }
 
@@ -51,6 +67,30 @@ public class PlayerScript : MonoBehaviour
 
         Destroy(GetComponent<PlayerPlatformerController>());
         PlayerSpawner.singleton.SpawnPlayer();
+    }
+
+
+
+    int GetEmptyPickupSLot()
+    {
+        for (int i = 0; i < snappedPickups.Length; i++)
+        {
+            if (snappedPickups[i] == null)
+                return i;
+        }
+        return -1; // not found
+    }
+
+    void PickItUp(Pickp pickup)
+    {
+
+        var slotNr = GetEmptyPickupSLot();
+        if (slotNr == -1) Debug.LogError("No slots available!");
+        snappedPickups[slotNr] = pickup;
+
+        pickup.SetState(PickupState.snappedToPlayer);
+        pickup.transform.parent = pickupSlots[slotNr];
+        pickup.transform.localPosition = new Vector3();
     }
 
 }
