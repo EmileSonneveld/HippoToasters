@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a301166e69ac52a45bbcd2824cbbda0d
+guid: 1877e2fa3ece46546af75a150ac51a04
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -14,8 +14,8 @@ ModelImporter:
     100016: epaule_D
     100018: epaule_G
     100020: IO_bag
-    100022: //RootNode
-    100024: IO_mesh
+    100022: IO_mesh
+    100024: //RootNode
     100026: IO_skeleton
     100028: main_D
     100030: main_D_end
@@ -42,8 +42,8 @@ ModelImporter:
     400016: epaule_D
     400018: epaule_G
     400020: IO_bag
-    400022: //RootNode
-    400024: IO_mesh
+    400022: IO_mesh
+    400024: //RootNode
     400026: IO_skeleton
     400028: main_D
     400030: main_D_end
@@ -93,7 +93,35 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: IO_skeleton|IO_skeletonAction
+      takeName: IO_skeleton|IO_skeletonAction
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
