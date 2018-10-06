@@ -55,16 +55,16 @@ public class PlayerPlatformerController : PhysicsObject
 
     protected override void ComputeVelocity()
     {
-        var becomeTent = animator.GetBool("becomeTent");
+        var wanneBeATent = animator.GetBool("wanneBeATent");
         Vector2 move = Vector2.zero;
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-            if ((!becomeTent && HasTent()) || becomeTent)
-                animator.SetBool("becomeTent", !becomeTent);
+            if ((!wanneBeATent && HasTent()) || wanneBeATent)
+                animator.SetBool("wanneBeATent", !wanneBeATent);
         }
 
-        if (!becomeTent)
+        if (!wanneBeATent)
         {
             move.x = Input.GetAxis("Horizontal");
 
@@ -119,6 +119,21 @@ public class PlayerPlatformerController : PhysicsObject
     public override void Update()
     {
         base.Update();
+        /*
+        this.animator.SetBool("jumpIo", false);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            this.animator.SetBool("jumpIo", true);
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            this.animator.SetBool("jumpIo", false);
+        }*/
+
+        if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.LeftShift)) ;
+
+
         var tmp = mainCamera.position;
         tmp.x = transform.position.x;
         tmp.y = transform.position.y;
@@ -127,6 +142,7 @@ public class PlayerPlatformerController : PhysicsObject
         if (lives < 0)
         {
             lives = 0;
+            Debug.Log("lives");
             DieSequence();
         }
 
@@ -171,7 +187,7 @@ public class PlayerPlatformerController : PhysicsObject
         }
     }
 
-    void DieSequence()
+    public void DieSequence()
     {
         Debug.Log("We died!");
 

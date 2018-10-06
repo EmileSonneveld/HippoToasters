@@ -2,23 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class killPlayer : MonoBehaviour {
+public class killPlayer : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
-            other.gameObject.tag = "Dead";
+            Debug.Log("OnTriggerEnter2D");
+
+            //other.gameObject.tag = "Dead";
+            PlayerSpawner.singleton.lastSpawnedPlayer.DieSequence();
         }
     }
 }
