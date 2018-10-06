@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerSpawner : MonoBehaviour
 {
     public static PlayerSpawner singleton;
-    public PlayerScript lastSpawnedPlayer;
+    public PlayerPlatformerController lastSpawnedPlayer;
     public GameObject playerPrefab;
 
     void Awake()
@@ -14,7 +14,7 @@ public class PlayerSpawner : MonoBehaviour
             Debug.LogWarning("Singleton already assigned!");
         singleton = this;
 
-        lastSpawnedPlayer = Object.FindObjectOfType<PlayerScript>();
+        lastSpawnedPlayer = Object.FindObjectOfType<PlayerPlatformerController>();
     }
 
     void Update()
@@ -27,6 +27,6 @@ public class PlayerSpawner : MonoBehaviour
 
         var obj = Instantiate(playerPrefab);
         obj.transform.position = transform.position;
-        lastSpawnedPlayer = obj.GetComponent<PlayerScript>();
+        lastSpawnedPlayer = obj.GetComponent<PlayerPlatformerController>();
     }
 }
