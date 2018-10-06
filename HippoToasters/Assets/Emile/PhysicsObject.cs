@@ -39,7 +39,6 @@ public class PhysicsObject : MonoBehaviour
 
     public virtual void Update()
     {
-        Debug.Log("mark");
         targetVelocity = Vector2.zero;
         ComputeVelocity();
     }

@@ -2,14 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*public static class ExtensionMethods
-{
-    public static void Mark(this Debug me)
-    {
-        Debug.Log("Mark");
-    }
-}*/
-
 
 public class PlayerPlatformerController : PhysicsObject
 {
@@ -51,20 +43,18 @@ public class PlayerPlatformerController : PhysicsObject
     {
         if (stateInfo.IsName("Player_grab"))
         {
-            Debug.Log("Grabbed EnterAnimationState");
-
-            int count = rb2d.Cast(targetVelocity, contactFilter, hitBuffer, 1 + shellRadius);
+            RaycastHit2D[] results = new RaycastHit2D[8];
+            int count = rb2d.Cast(targetVelocity, contactFilter, results, 0.5f + shellRadius);
             if (count > 0)
             {
                 Debug.Log("Grabbed contact!");
+                this.marker.transform.position = results[0].point;
             }
         }
     }
 
     protected override void ComputeVelocity()
     {
-        Debug.Log("mark");
-
         var becomeTent = animator.GetBool("becomeTent");
         Vector2 move = Vector2.zero;
 
