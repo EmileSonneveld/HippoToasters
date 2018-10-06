@@ -21,20 +21,25 @@ public class PhysicsObject : MonoBehaviour
     protected const float minMoveDistance = 0.001f;
     protected const float shellRadius = 0.01f;
 
-    void OnEnable()
+    public virtual void Awake()
+    {
+    }
+
+    public virtual void OnEnable()
     {
         rb2d = GetComponent<Rigidbody2D>();
     }
 
-    void Start()
+    public virtual void Start()
     {
         contactFilter.useTriggers = false;
         contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
         contactFilter.useLayerMask = true;
     }
 
-    void Update()
+    public virtual void Update()
     {
+        Debug.Log("mark");
         targetVelocity = Vector2.zero;
         ComputeVelocity();
     }
@@ -44,7 +49,7 @@ public class PhysicsObject : MonoBehaviour
 
     }
 
-    void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         velocity += gravityModifier * Physics2D.gravity * Time.deltaTime;
         velocity.x = targetVelocity.x;
