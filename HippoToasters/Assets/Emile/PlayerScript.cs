@@ -12,6 +12,7 @@ public class PlayerScript : MonoBehaviour
     /// Pickups that the player has in his back
     /// </summary>
     public Pickup[] snappedPickups;
+    public int[] snappedPickupsQuantity;
 
     private Transform mainCamera;
 
@@ -20,15 +21,17 @@ public class PlayerScript : MonoBehaviour
         test = GetComponent<PhysicsObject>();
         this.mainCamera = Camera.main.transform;
         snappedPickups = new Pickup[pickupSlots.Length];
+        snappedPickupsQuantity = new int[pickupSlots.Length];
+        //for (int i = 0; i < pickupSlots.Length; i++) {
+        //    snappedPickupsQuantity[i] = 0;
+        //}
     }
 
-    // Use this for initialization
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         var tmp = mainCamera.position;
@@ -40,6 +43,21 @@ public class PlayerScript : MonoBehaviour
         {
             lives = 0;
             DieSequence();
+        }
+
+        for (int i = 0; i < pickupSlots.Length; i++)
+        {
+            var h = this.pickupSlots[i];
+            var tm = h.GetComponentInChildren<TextMesh>();
+            string text = "";
+
+            var p = snappedPickups[i];
+            if (p)
+            {
+                text = p.name + ": " + this.snappedPickupsQuantity[i] + "/" + p.maxStackable;
+            }
+
+            tm.text = text;
         }
     }
 
@@ -93,9 +111,26 @@ public class PlayerScript : MonoBehaviour
 
     void PickItUp(Pickup pickup)
     {
+        for (int i = 0; i < snappedPickups.Length; i++)
+        {
+            var p = snappedPickups[i];
+            if (p == null) continue;
+            if (p.GetType() == pickup.GetType())
+            {
+                if (snappedPickupsQuantity[i] < p.maxStackable)
+                {
+                    snappedPickupsQuantity[i] += 1;
+                    Destroy(pickup.gameObject); // Will be regenerated when we die.
+                    return;
+                }
+            }
+        }
+
         var slotNr = GetEmptyPickupSLot();
         if (slotNr == -1) Debug.LogError("No slots available!");
+
         snappedPickups[slotNr] = pickup;
+        snappedPickupsQuantity[slotNr] = 1;
 
         pickup.SetState(PickupState.snappedToPlayer);
         pickup.transform.parent = pickupSlots[slotNr];
@@ -120,8 +155,16 @@ public class PlayerScript : MonoBehaviour
         var pickup = snappedPickups[slot];
         snappedPickups[slot] = null;
 
+        // TODO: Generate multiple wjen quantity > 1
         pickup.SetState(PickupState.floatingFree);
         pickup.transform.parent = null;
+
+        for (int i = 0; i < snappedPickupsQuantity[slot] - 1; i++) {
+            var inst = Instantiate(pickup.gameObject);
+            inst.transform.position = transform.position;
+        }
+        snappedPickupsQuantity[slot] = 0;
+
     }
 
 }
