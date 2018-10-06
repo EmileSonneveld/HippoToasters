@@ -116,27 +116,18 @@ public class PlayerPlatformerController : PhysicsObject
         targetVelocity = move * maxSpeed;
     }
 
+    Vector2 cameraOffset = new Vector2(1.6f, 0.8f);
+
     public override void Update()
     {
         base.Update();
-        /*
-        this.animator.SetBool("jumpIo", false);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            this.animator.SetBool("jumpIo", true);
-        }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            this.animator.SetBool("jumpIo", false);
-        }*/
-
-        if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.LeftShift)) ;
+        //if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.LeftShift)) ;
 
 
         var tmp = mainCamera.position;
-        tmp.x = transform.position.x;
-        tmp.y = transform.position.y;
+        tmp.x = transform.position.x + cameraOffset.x;
+        tmp.y = transform.position.y + cameraOffset.y;
         mainCamera.position = tmp;
 
         if (lives < 0)
@@ -178,7 +169,7 @@ public class PlayerPlatformerController : PhysicsObject
             if (col.relativeVelocity.sqrMagnitude > 5)
             {
                 Debug.Log("OnCollisionEnter2D" + col.relativeVelocity.magnitude);
-                this.lives -= col.relativeVelocity.magnitude * 15; // random multiplier
+                this.lives -= col.relativeVelocity.magnitude * 9; // random multiplier
             }
         }
         else

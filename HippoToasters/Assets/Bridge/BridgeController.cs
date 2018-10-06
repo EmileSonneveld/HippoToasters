@@ -19,7 +19,7 @@ public class BridgeController : MonoBehaviour
         if (this.playerIsIn)
         {
             var pl = PlayerSpawner.singleton.lastSpawnedPlayer;
-            if (pl.velocity.sqrMagnitude > 5.4f * 5.4f)
+            if (pl.velocity.sqrMagnitude > 3 * 3)
             {
                 //Debug.Log("Vel: " + pl.velocity.sqrMagnitude);
                 if (!WiggleSequence_runing)
@@ -35,7 +35,7 @@ public class BridgeController : MonoBehaviour
 
         Debug.Log("Bridge Break!");
         this.anim.SetTrigger("wiggle");
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(0.8f);
         colliderObj.SetActive(false);
 
         yield return new WaitForSeconds(3);
