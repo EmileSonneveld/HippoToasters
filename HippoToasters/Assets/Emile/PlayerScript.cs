@@ -60,7 +60,10 @@ public class PlayerScript : MonoBehaviour
 
             tm.text = text;
         }
+
+        this.lives -= 0.5f * Time.deltaTime;
     }
+
 
     void OnCollisionEnter2D(Collision2D col)
     {
@@ -160,7 +163,8 @@ public class PlayerScript : MonoBehaviour
         pickup.SetState(PickupState.floatingFree);
         pickup.transform.parent = null;
 
-        for (int i = 0; i < snappedPickupsQuantity[slot] - 1; i++) {
+        for (int i = 0; i < snappedPickupsQuantity[slot] - 1; i++)
+        {
             var inst = Instantiate(pickup.gameObject);
             inst.transform.position = transform.position;
         }
@@ -168,4 +172,16 @@ public class PlayerScript : MonoBehaviour
 
     }
 
+    public bool HasTent()
+    {
+        for (int i = 0; i < snappedPickups.Length; i++)
+        {
+            var p = this.snappedPickups[i];
+            if (p.GetType() == typeof(TentPickup))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

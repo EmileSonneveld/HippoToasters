@@ -8,31 +8,45 @@ public class PlayerPlatformerController : PhysicsObject
     public float maxSpeed = 7;
     public float jumpTakeOffSpeed = 7;
 
-    private SpriteRenderer spriteRenderer;
+    //private SpriteRenderer spriteRenderer;
     private Animator animator;
+
+    private PlayerScript playerScript;
 
     // Use this for initialization
     void Awake()
     {
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        playerScript = GetComponent<PlayerScript>();
+        //spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponent<Animator>();
     }
 
     protected override void ComputeVelocity()
     {
+        var becomeTent = animator.GetBool("becomeTent");
         Vector2 move = Vector2.zero;
 
-        move.x = Input.GetAxis("Horizontal");
-
-        if (Input.GetButtonDown("Jump") && grounded)
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            velocity.y = jumpTakeOffSpeed;
+            if ((!becomeTent && playerScript.HasTent()) || becomeTent)
+                animator.SetBool("becomeTent", !becomeTent);
         }
-        else if (Input.GetButtonUp("Jump"))
+
+
+        if (!becomeTent)
         {
-            if (velocity.y > 0)
+            move.x = Input.GetAxis("Horizontal");
+
+            if (Input.GetButtonDown("Jump") && grounded)
             {
-                velocity.y = velocity.y * 0.5f;
+                velocity.y = jumpTakeOffSpeed;
+            }
+            else if (Input.GetButtonUp("Jump"))
+            {
+                if (velocity.y > 0)
+                {
+                    velocity.y = velocity.y * 0.5f;
+                }
             }
         }
 
@@ -45,11 +59,6 @@ public class PlayerPlatformerController : PhysicsObject
             transform.localScale = tmp;
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            var becomeTent = animator.GetBool("becomeTent");
-            animator.SetBool("becomeTent", !becomeTent);
-        }
 
         if (animator)
         {
@@ -60,8 +69,7 @@ public class PlayerPlatformerController : PhysicsObject
                 animator.IsInTransition(0)
                 )
             {
-
-                Debug.Log("Transiton 0" + animator.GetNextAnimatorStateInfo(0).fullPathHash);
+                //Debug.Log("Transiton 0" + animator.GetNextAnimatorStateInfo(0).fullPathHash);
             }
         }
         targetVelocity = move * maxSpeed;
