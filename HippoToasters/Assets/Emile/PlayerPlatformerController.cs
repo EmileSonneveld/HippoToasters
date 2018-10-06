@@ -45,6 +45,12 @@ public class PlayerPlatformerController : PhysicsObject
             transform.localScale = tmp;
         }
 
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            var becomeTent = animator.GetBool("becomeTent");
+            animator.SetBool("becomeTent", !becomeTent);
+        }
+
         if (animator)
         {
             animator.SetBool("grounded", grounded);
@@ -54,6 +60,7 @@ public class PlayerPlatformerController : PhysicsObject
                 animator.IsInTransition(0)
                 )
             {
+
                 Debug.Log("Transiton 0" + animator.GetNextAnimatorStateInfo(0).fullPathHash);
             }
         }
