@@ -1150,7 +1150,16 @@ Prefab:
     - target: {fileID: 224648637137310164, guid: 1a7de80b28692644082181780bd54201,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -70.20001
+      value: -61.161
+      objectReference: {fileID: 0}
+    - target: {fileID: 224648637137310164, guid: 1a7de80b28692644082181780bd54201,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 51.408
+      objectReference: {fileID: 0}
+    - target: {fileID: 1556834821849492, guid: 1a7de80b28692644082181780bd54201, type: 2}
+      propertyPath: m_Name
+      value: TextLives
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a7de80b28692644082181780bd54201, type: 2}
