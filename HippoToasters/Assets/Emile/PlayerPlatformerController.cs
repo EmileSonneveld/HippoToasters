@@ -69,7 +69,7 @@ public class PlayerPlatformerController : PhysicsObject
                 animator.SetBool("wanneBeATent", !wanneBeATent);
         }
 
-        if (!wanneBeATent)
+        if (!wanneBeATent && !currState.IsName("Caca"))
         {
             move.x = Input.GetAxis("Horizontal");
 
@@ -138,7 +138,22 @@ public class PlayerPlatformerController : PhysicsObject
             velocity.y = 0;
     }
 
+    public GameObject cacaObj;
+    private IEnumerator ShitSequence()
+    {
+        yield return new WaitForSeconds(3);
+        var ui = FindObjectOfType<UiManager>();
+        ui.shitAlert = true;
+        yield return new WaitForSeconds(2);
+        ui.shitAlert = false;
+        animator.SetTrigger("Caca");
+        yield return new WaitForSeconds(2);
+        var c = Instantiate(cacaObj);
+        c.transform.position = this.transform.position;
+    }
     Vector2 cameraOffset = new Vector2(1.6f, 0.8f);
+
+    public float foodBar = 100;
 
     public override void Update()
     {
@@ -154,18 +169,46 @@ public class PlayerPlatformerController : PhysicsObject
         {
             this.lives += 5f * Time.deltaTime;
         }
+        if (Input.GetButtonDown("Eat"))
+        {
+            StartCoroutine(ShitSequence());
+
+            for (int i = 0; i < pickupSlots.Length; i++)
+            {
+                var p = snappedPickups[i];
+                if (p == null) continue;
+                if (p.GetType() == typeof(FoodPickup))
+                {
+                    foodBar += 20;
+                    snappedPickupsQuantity[i] -= 1;
+                    if (snappedPickupsQuantity[i] == 0)
+                        this.PickItOf(i);
+                }
+            }
+        }
+        foodBar -= 0.5f * Time.deltaTime;
+        if (foodBar <= 0)
+        {
+            foodBar = 0;
+            lives -= 5 * Time.deltaTime;
+        }
+        else if (foodBar > 100)
+        {
+            foodBar = 100;
+        }
 
         var tmp = mainCamera.position;
         tmp.x = transform.position.x + cameraOffset.x;
         tmp.y = transform.position.y + cameraOffset.y;
         mainCamera.position = tmp;
 
+        this.lives -= 0.5f * Time.deltaTime;
         if (lives < 0)
         {
             lives = 0;
-            Debug.Log("lives");
             DieSequence();
-        } else if (lives > 100)
+        }
+        else if (lives > 100)
         {
             lives = 100;
         }
@@ -185,7 +228,11 @@ public class PlayerPlatformerController : PhysicsObject
             tm.text = text;
         }
 
-        this.lives -= 0.5f * Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            //animator.SetTrigger("Caca");
+        }
     }
 
 
@@ -281,9 +328,11 @@ public class PlayerPlatformerController : PhysicsObject
         var pickup = snappedPickups[slot];
         snappedPickups[slot] = null;
 
-        // TODO: Generate multiple wjen quantity > 1
         pickup.SetState(PickupState.floatingFree);
         pickup.transform.parent = null;
+
+        if (snappedPickupsQuantity[slot] <= 1)
+            Destroy(pickup.gameObject);
 
         for (int i = 0; i < snappedPickupsQuantity[slot] - 1; i++)
         {

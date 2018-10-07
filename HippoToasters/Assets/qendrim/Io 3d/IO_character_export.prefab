@@ -630,7 +630,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1608804677351210}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -3.15, y: 0.98, z: 0}
+  m_LocalPosition: {x: -3.7, y: 0.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4924429537330014}
@@ -1444,6 +1444,8 @@ MonoBehaviour:
   jumpTakeOffSpeed: 7
   isGrabbed: 0
   canDoAirJumpTime: 0
+  cacaObj: {fileID: 1688651444467976, guid: eab0469aba1120c418808b3353b00665, type: 2}
+  foodBar: 100
 --- !u!137 &137396957934603442
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

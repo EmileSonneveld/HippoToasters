@@ -6,7 +6,7 @@ public class UiManager : MonoBehaviour
 {
 
     public RectTransform livesTrans;
-    //private float origLivesSize;
+    public RectTransform foodTrans;
 
     private void Awake()
     {
@@ -14,15 +14,38 @@ public class UiManager : MonoBehaviour
     }
     void Start()
     {
-        //origLivesSize = livesTrans.right.x;
     }
 
     void Update()
     {
         var playerScript = PlayerSpawner.singleton.lastSpawnedPlayer;
 
-        var tmp = livesTrans.localScale;
-        tmp.x = (playerScript.lives / 100);
-        livesTrans.localScale = tmp;
+        {
+            var tmp = livesTrans.localScale;
+            tmp.x = (playerScript.lives / 100);
+            livesTrans.localScale = tmp;
+        }
+        {
+            var tmp = livesTrans.localScale;
+            tmp.x = (playerScript.foodBar / 100);
+            foodTrans.localScale = tmp;
+        }
+        if (shitAlert)
+        {
+            shitFLipTimer -= Time.deltaTime;
+            if (shitFLipTimer < 0)
+            {
+                shitFLipTimer = 0.5f;
+                shitAlertObj.SetActive(!shitAlertObj.activeSelf);
+            }
+        }
+        else
+        {
+
+        }
     }
+
+    private float shitFLipTimer;
+    public GameObject shitAlertObj;
+    public bool shitAlert = false;
 }
