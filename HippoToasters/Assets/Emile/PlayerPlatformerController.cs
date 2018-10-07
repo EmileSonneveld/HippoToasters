@@ -8,14 +8,14 @@ public class PlayerPlatformerController : PhysicsObject
 
     public float lives = 100;
     public GameObject marker;
-    
+
 
     public Transform[] pickupSlots;
     /// <summary>
     /// Pickups that the player has in his back
     /// </summary>
-    public Pickup[] snappedPickups;
-    public int[] snappedPickupsQuantity;
+    Pickup[] snappedPickups;
+    int[] snappedPickupsQuantity;
 
     private Transform mainCamera;
     public GameObject klimbingPickaxe;
@@ -40,28 +40,26 @@ public class PlayerPlatformerController : PhysicsObject
         animator = GetComponent<Animator>();
     }
 
+    public bool isGrabbed = false;
+    public float canDoAirJumpTime = 0;
     public void EnterAnimationState(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (stateInfo.IsName("Player_grab"))
+        if (stateInfo.IsName("grab"))
         {
-            RaycastHit2D[] results = new RaycastHit2D[8];
-            int count = rb2d.Cast(targetVelocity, contactFilter, results, 0.5f + shellRadius);
-            if (count > 0)
-            {
-                Debug.Log("Grabbed contact!");
-                this.marker.transform.position = results[0].point;
-            }
         }
     }
 
     protected override void ComputeVelocity()
     {
+        var currState = animator.GetCurrentAnimatorStateInfo(0);
+        bool jumpOrGrab = currState.IsName("jump") || currState.IsName("grab");
+
         var wanneBeATent = animator.GetBool("wanneBeATent");
         Vector2 move = Vector2.zero;
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-           
+
             if ((!wanneBeATent && HasTent()) || wanneBeATent)
                 animator.SetBool("wanneBeATent", !wanneBeATent);
         }
@@ -70,7 +68,7 @@ public class PlayerPlatformerController : PhysicsObject
         {
             move.x = Input.GetAxis("Horizontal");
 
-            if (Input.GetButtonDown("Jump") && grounded)
+            if (Input.GetButtonDown("Jump") && (grounded || (jumpOrGrab && canDoAirJumpTime > 0)))
             {
                 velocity.y = jumpTakeOffSpeed;
             }
@@ -82,9 +80,34 @@ public class PlayerPlatformerController : PhysicsObject
                 }
             }
 
-            //if ()
+            if (Input.GetKey(KeyCode.G))
             {
-                this.animator.SetBool("wantToGrab", Input.GetKey(KeyCode.G));
+                this.animator.SetBool("wantToGrab", true);
+                canDoAirJumpTime = 0.7f;
+            }
+            else
+            {
+                this.animator.SetBool("wantToGrab", false);
+                this.klimbingPickaxe.SetActive(false);
+                isGrabbed = false;
+            }
+            if (jumpOrGrab)
+            {
+                if (Input.GetKeyDown(KeyCode.G))
+                {
+                    Debug.Log("G Trigger");
+                    RaycastHit2D[] results = new RaycastHit2D[8];
+                    int count = rb2d.Cast(new Vector2(1, 0), contactFilter, results, 3f + shellRadius); // targetVelocity
+                    if (count == 0)
+                        count = rb2d.Cast(new Vector2(-1, 0), contactFilter, results, 3f + shellRadius); // targetVelocity
+                    if (count > 0)
+                    {
+                        Debug.Log("Grabbed contact!");
+                        this.marker.transform.position = results[0].point;
+                        this.klimbingPickaxe.SetActive(true);
+                        isGrabbed = true;
+                    }
+                }
             }
         }
 
@@ -98,24 +121,18 @@ public class PlayerPlatformerController : PhysicsObject
         }
 
 
-        if (animator)
-        {
-            animator.SetBool("grounded", grounded);
-            animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
+        animator.SetBool("grounded", grounded);
+        animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
-            if (
-                animator.IsInTransition(0)
-                )
-            {
-                if (animator.GetNextAnimatorStateInfo(0).IsName("Player_grab"))
-                {
-                    Debug.Log("In grab state!");
-                    // Todo raycast, and grab the rocks
-                }
-                //Debug.Log("Transiton 0" + animator.GetNextAnimatorStateInfo(0).fullPathHash);
-            }
+        if (
+            animator.IsInTransition(0)
+            )
+        {
         }
         targetVelocity = move * maxSpeed;
+
+        if (isGrabbed)
+            velocity.y = 0;
     }
 
     Vector2 cameraOffset = new Vector2(1.6f, 0.8f);
@@ -123,6 +140,7 @@ public class PlayerPlatformerController : PhysicsObject
     public override void Update()
     {
         base.Update();
+        canDoAirJumpTime -= Time.deltaTime;
 
         //if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.LeftShift)) ;
 
@@ -268,6 +286,7 @@ public class PlayerPlatformerController : PhysicsObject
         for (int i = 0; i < snappedPickups.Length; i++)
         {
             var p = this.snappedPickups[i];
+            if (p == null) continue;
             if (p.GetType() == typeof(TentPickup))
             {
                 return true;
