@@ -8,7 +8,7 @@ public class ForwardAnimationToPlayer : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        var c = GameObject.FindObjectOfType<PlayerPlatformerController>();
+        var c = PlayerSpawner.singleton.lastSpawnedPlayer;
         c.EnterAnimationState(animator, stateInfo, layerIndex);
     }
 
