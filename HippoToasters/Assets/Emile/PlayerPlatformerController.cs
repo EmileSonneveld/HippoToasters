@@ -8,7 +8,7 @@ public class PlayerPlatformerController : PhysicsObject
 
     public float lives = 100;
     public GameObject marker;
-    public GameObject tente;
+    
 
     public Transform[] pickupSlots;
     /// <summary>
@@ -61,7 +61,7 @@ public class PlayerPlatformerController : PhysicsObject
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-            tente.SetActive(true);
+           
             if ((!wanneBeATent && HasTent()) || wanneBeATent)
                 animator.SetBool("wanneBeATent", !wanneBeATent);
         }

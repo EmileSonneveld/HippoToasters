@@ -1282,6 +1282,7 @@ MonoBehaviour:
   velocity: {x: 0, y: 0}
   lives: 100
   marker: {fileID: 0}
+  tente: {fileID: 0}
   pickupSlots:
   - {fileID: 4578580560083496}
   - {fileID: 4769399707975416}
