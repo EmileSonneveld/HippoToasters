@@ -7,7 +7,7 @@ public class PlayerPlatformerController : PhysicsObject
 {
 
     public float lives = 100;
-    public GameObject marker;
+    //public GameObject marker;
 
 
     public Transform[] pickupSlots;
@@ -106,7 +106,7 @@ public class PlayerPlatformerController : PhysicsObject
                         count = rb2d.Cast(new Vector2(-1, 0), contactFilter, results, 3f + shellRadius); // targetVelocity
                     if (count > 0)
                     {
-                        this.marker.transform.position = results[0].point;
+                        //this.marker.transform.position = results[0].point;
                         this.klimbingPickaxe.SetActive(true);
                         isGrabbed = true;
                     }
@@ -171,20 +171,24 @@ public class PlayerPlatformerController : PhysicsObject
         }
         if (Input.GetButtonDown("Eat"))
         {
-            StartCoroutine(ShitSequence());
-
+            bool foundFood = false;
             for (int i = 0; i < pickupSlots.Length; i++)
             {
                 var p = snappedPickups[i];
                 if (p == null) continue;
                 if (p.GetType() == typeof(FoodPickup))
                 {
+                    foundFood = true;
                     foodBar += 20;
                     snappedPickupsQuantity[i] -= 1;
-                    if (snappedPickupsQuantity[i] == 0)
+                    if (snappedPickupsQuantity[i] == 0) 
                         this.PickItOf(i);
                 }
             }
+            if (foundFood)
+                StartCoroutine(ShitSequence());
+            else
+                Debug.Log("No food in inventory!");
         }
         foodBar -= 0.5f * Time.deltaTime;
         if (foodBar <= 0)
