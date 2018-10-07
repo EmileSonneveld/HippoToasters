@@ -54,6 +54,11 @@ public class PlayerPlatformerController : PhysicsObject
         var currState = animator.GetCurrentAnimatorStateInfo(0);
         bool jumpOrGrab = currState.IsName("jump") || currState.IsName("grab");
 
+        if (currState.IsName("Tent"))
+        {
+            this.lives -= 0.5f * Time.deltaTime;
+        }
+
         var wanneBeATent = animator.GetBool("wanneBeATent");
         Vector2 move = Vector2.zero;
 
@@ -143,6 +148,13 @@ public class PlayerPlatformerController : PhysicsObject
         //if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.LeftShift)) ;
 
 
+        var currState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (currState.IsName("Tent"))
+        {
+            this.lives += 5f * Time.deltaTime;
+        }
+
         var tmp = mainCamera.position;
         tmp.x = transform.position.x + cameraOffset.x;
         tmp.y = transform.position.y + cameraOffset.y;
@@ -153,6 +165,9 @@ public class PlayerPlatformerController : PhysicsObject
             lives = 0;
             Debug.Log("lives");
             DieSequence();
+        } else if (lives > 100)
+        {
+            lives = 100;
         }
 
         for (int i = 0; i < pickupSlots.Length; i++)
