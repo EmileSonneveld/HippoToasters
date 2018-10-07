@@ -95,14 +95,12 @@ public class PlayerPlatformerController : PhysicsObject
             {
                 if (Input.GetKeyDown(KeyCode.G))
                 {
-                    Debug.Log("G Trigger");
                     RaycastHit2D[] results = new RaycastHit2D[8];
                     int count = rb2d.Cast(new Vector2(1, 0), contactFilter, results, 3f + shellRadius); // targetVelocity
                     if (count == 0)
                         count = rb2d.Cast(new Vector2(-1, 0), contactFilter, results, 3f + shellRadius); // targetVelocity
                     if (count > 0)
                     {
-                        Debug.Log("Grabbed contact!");
                         this.marker.transform.position = results[0].point;
                         this.klimbingPickaxe.SetActive(true);
                         isGrabbed = true;
