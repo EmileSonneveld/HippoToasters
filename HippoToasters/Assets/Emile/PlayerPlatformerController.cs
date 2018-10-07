@@ -57,7 +57,7 @@ public class PlayerPlatformerController : PhysicsObject
         var wanneBeATent = animator.GetBool("wanneBeATent");
         Vector2 move = Vector2.zero;
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetButtonDown("Tent"))
         {
 
             if ((!wanneBeATent && HasTent()) || wanneBeATent)
@@ -80,7 +80,7 @@ public class PlayerPlatformerController : PhysicsObject
                 }
             }
 
-            if (Input.GetKey(KeyCode.G))
+            if (Input.GetButton("Grab"))
             {
                 this.animator.SetBool("wantToGrab", true);
                 canDoAirJumpTime = 0.7f;
@@ -93,7 +93,7 @@ public class PlayerPlatformerController : PhysicsObject
             }
             if (jumpOrGrab)
             {
-                if (Input.GetKeyDown(KeyCode.G))
+                if (Input.GetButtonDown("Grab"))
                 {
                     RaycastHit2D[] results = new RaycastHit2D[8];
                     int count = rb2d.Cast(new Vector2(1, 0), contactFilter, results, 3f + shellRadius); // targetVelocity

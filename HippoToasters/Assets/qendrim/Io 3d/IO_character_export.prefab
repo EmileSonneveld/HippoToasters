@@ -630,7 +630,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1608804677351210}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 115.4, y: 20.92, z: 0}
+  m_LocalPosition: {x: -3.15, y: 0.98, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4924429537330014}
@@ -692,8 +692,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1203025053558892}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: -2.3300002, y: 2.61, z: -0.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1.6786, y: 2.9279, z: -0.52148}
+  m_LocalScale: {x: 0.67172, y: 0.67172, z: 0.67172}
   m_Children:
   - {fileID: 4258877849125740}
   m_Father: {fileID: 4105464833971842}
@@ -1430,6 +1430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minGroundNormalY: 0.65
   gravityModifier: 1
+  targetVelocity: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
   lives: 100
   marker: {fileID: 0}
@@ -1438,11 +1439,11 @@ MonoBehaviour:
   - {fileID: 4769399707975416}
   - {fileID: 4482673867308320}
   - {fileID: 4096259272649852}
-  snappedPickups: []
-  snappedPickupsQuantity: 
   klimbingPickaxe: {fileID: 1210677416122360}
   maxSpeed: 7
   jumpTakeOffSpeed: 7
+  isGrabbed: 0
+  canDoAirJumpTime: 0
 --- !u!137 &137396957934603442
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
